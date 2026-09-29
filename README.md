@@ -1,6 +1,6 @@
 # 🐳☸️ KR Network Cloud — Docker & Kubernetes Production Mastery Portal
 
-[![GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue?style=for-the-badge&logo=github)](https://devopsfaisal.github.io/krcloud-docker-kubernetes-portal/)
+[![GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue?style=for-the-badge&logo=github)](https://devopsfaisal.github.io/docker-kubernetes-portal/)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
 [![CKA Exam Ready](https://img.shields.io/badge/CKA-Certified%20Kubernetes%20Administrator-brightgreen?style=for-the-badge&logo=linuxfoundation)](https://www.cncf.io/certification/cka/)
@@ -79,12 +79,12 @@ python3 -m http.server 8000
 
 ## 🌐 Deploy to GitHub Pages in 3 Simple Steps
 
-To deploy this portal directly under your personal GitHub domain (e.g. `https://devopsfaisal.github.io/krcloud-docker-kubernetes-portal/`):
+To deploy this portal directly under your personal GitHub domain (e.g. `https://devopsfaisal.github.io/docker-kubernetes-portal/`):
 
 ### Step 1: Create a New GitHub Repository
 1. Log in to [GitHub](https://github.com/).
 2. Click **New Repository**.
-3. Name the repository: `krcloud-docker-kubernetes-portal` (or any custom name).
+3. Name the repository: `docker-kubernetes-portal` (or any custom name).
 4. Leave it **Public** without initializing with README (we already have everything prepared).
 
 ### Step 2: Push the Portal from Your Terminal
@@ -94,20 +94,20 @@ Run the following commands:
 cd /Users/deadpool/.gemini/antigravity/scratch/krcloud-docker-kubernetes-portal
 
 # Link to your remote GitHub repository using SSH
-git remote add origin git@github.com:devopsfaisal/krcloud-docker-kubernetes-portal.git
+git remote add origin git@github.com:devopsfaisal/docker-kubernetes-portal.git
 
 # Push the code to GitHub
 git push -u origin main
 ```
 
 ### Step 3: Enable GitHub Pages
-1. Go to your repository on GitHub: `https://github.com/devopsfaisal/krcloud-docker-kubernetes-portal`.
+1. Go to your repository on GitHub: `https://github.com/devopsfaisal/docker-kubernetes-portal`.
 2. Click **Settings** (top navigation bar) -> Click **Pages** (left sidebar).
 3. Under **Build and deployment** -> **Source**: Select **Deploy from a branch**.
 4. Under **Branch**: Select `main` and folder `/ (root)`.
 5. Click **Save**.
 6. Within 60 seconds, your site will be live at:
-   **`https://devopsfaisal.github.io/krcloud-docker-kubernetes-portal/`**
+   **`https://devopsfaisal.github.io/docker-kubernetes-portal/`**
 
 ---
 
