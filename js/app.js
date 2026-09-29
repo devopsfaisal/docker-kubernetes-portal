@@ -11,6 +11,7 @@
     activeFilter: 'all',
     searchQuery: '',
     currentDayId: 1,
+    currentLang: localStorage.getItem('krcloud_preferred_lang') || 'en', // 'en', 'hi', 'ar'
     completedDays: new Set(JSON.parse(localStorage.getItem('krcloud_completed_days') || '[]')),
     theme: localStorage.getItem('krcloud_theme') || 'dark'
   };
@@ -203,6 +204,12 @@
 
   function renderLectureCard(lec) {
     const isCompleted = appState.completedDays.has(lec.dayNum);
+    const langBadge = appState.currentLang === 'hi'
+      ? '<span class="feature-badge" style="color:var(--accent-amber); font-weight:700;"><span style="margin-right:2px;">🇮🇳</span> Desi Notes Ready</span>'
+      : appState.currentLang === 'ar'
+      ? '<span class="feature-badge" style="color:var(--accent-emerald); font-weight:700;"><span style="margin-right:2px;">🇸🇦</span> شرح عربي متاح</span>'
+      : '<span class="feature-badge" style="color:var(--accent-cyan); font-weight:700;"><span style="margin-right:2px;">🇬🇧</span> Theory (EN)</span>';
+
     return `
       <div class="lecture-card" data-day-id="${lec.dayNum}">
         <div class="lecture-card-top">
@@ -219,7 +226,7 @@
           <div class="lecture-features-badges">
             ${lec.mermaid ? '<span class="feature-badge" title="Has Architecture Diagram"><i class="fa-solid fa-diagram-project" style="color:var(--accent-cyan);"></i></span>' : ''}
             <span class="feature-badge" title="Estimated Study Duration"><i class="fa-regular fa-clock"></i> ${lec.duration}</span>
-            <span class="feature-badge" title="Trilingual Support (EN, HI, AR)"><i class="fa-solid fa-language" style="color:var(--accent-amber);"></i> 3 Lang</span>
+            ${langBadge}
           </div>
 
           <span class="open-lecture-btn">
@@ -256,8 +263,14 @@
     // Render Panes
     renderModalPanes(lec);
 
-    // Reset to Theory tab
-    activateModalTab('theory');
+    // Reset to preferred language tab
+    if (appState.currentLang === 'hi') {
+      activateModalTab('desi');
+    } else if (appState.currentLang === 'ar') {
+      activateModalTab('arabic');
+    } else {
+      activateModalTab('theory');
+    }
 
     // Show Modal
     el.modalBackdrop.classList.add('open');
@@ -304,14 +317,18 @@
 
       <div class="content-section">
         <h3 class="content-heading" style="color:var(--accent-amber);"><i class="fa-solid fa-chalkboard-user"></i> Desi Samjhauta & Real-Life Fundas</h3>
-        <ul class="key-concepts-list">
-          ${lec.keyConcepts.map(c => `<li><i class="fa-solid fa-lightbulb" style="color:var(--accent-amber);"></i> <div>${c}</div></li>`).join('')}
-        </ul>
+        <div style="color:var(--text-secondary); line-height:1.8; font-size:0.95rem; margin-bottom:1.5rem;">
+          ${lec.hinglishHtml || `
+            <ul class="key-concepts-list">
+              ${lec.keyConcepts.map(c => `<li><i class="fa-solid fa-lightbulb" style="color:var(--accent-amber);"></i> <div>${c}</div></li>`).join('')}
+            </ul>
+          `}
+        </div>
       </div>
 
       <div class="code-block-wrapper">
         <div class="code-block-header">
-          <span class="code-lang-badge">Essential Practical Commands</span>
+          <span class="code-lang-badge"><i class="fa-solid fa-terminal"></i> Essential Practical Commands</span>
           <button class="copy-code-btn" onclick="copySnippet(this)"><i class="fa-regular fa-copy"></i> Copy</button>
         </div>
         <pre><code>${lec.labs || lec.commands}</code></pre>
@@ -327,14 +344,16 @@
 
       <div class="content-section" style="direction:rtl; text-align:right;">
         <h3 class="content-heading" style="color:var(--accent-emerald);"><i class="fa-solid fa-book-bookmark"></i> المفاهيم الأساسية والأهداف</h3>
-        <p style="color:var(--text-secondary); line-height:1.8; font-size:0.95rem; margin-bottom:1.5rem;">
-          في هذا الدرس يتم دراسة وتطبيق: <strong>${lec.cleanTitle}</strong> ضمن منظومة الحاويات وإدارة البنية التحتية السحابية الحديثة.
-        </p>
+        <div style="color:var(--text-secondary); line-height:1.8; font-size:0.95rem; margin-bottom:1.5rem;">
+          ${lec.arabicHtml || `
+            <p>في هذا الدرس يتم دراسة وتطبيق: <strong>${lec.cleanTitle}</strong> ضمن منظومة الحاويات وإدارة البنية التحتية السحابية الحديثة.</p>
+          `}
+        </div>
       </div>
 
       <div class="code-block-wrapper" style="direction:ltr;">
         <div class="code-block-header">
-          <span class="code-lang-badge">أوامر التنفيذ العملية</span>
+          <span class="code-lang-badge"><i class="fa-solid fa-terminal"></i> أوامر التنفيذ والمختبر العملي</span>
           <button class="copy-code-btn" onclick="copySnippet(this)"><i class="fa-regular fa-copy"></i> Copy</button>
         </div>
         <pre><code>${lec.commands || lec.labs}</code></pre>
@@ -596,6 +615,55 @@
     if (el.switchK8s) {
       el.switchK8s.addEventListener('click', () => switchCourse('k8s'));
     }
+
+    // Language Switcher Events
+    function setLanguage(lang) {
+      appState.currentLang = lang;
+      localStorage.setItem('krcloud_preferred_lang', lang);
+
+      // Update Header buttons
+      document.querySelectorAll('#header-lang-switcher .lang-switch-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      });
+
+      // Update Hero chips
+      document.querySelectorAll('#hero-lang-box .hero-lang-chip').forEach(chip => {
+        chip.classList.toggle('active', chip.getAttribute('data-lang') === lang);
+      });
+
+      // Update status text
+      const displayEl = document.getElementById('current-lang-display');
+      if (displayEl) {
+        if (lang === 'hi') {
+          displayEl.innerHTML = '<span style="color:var(--accent-amber);">🇮🇳 Hinglish (Desi Notes)</span>';
+        } else if (lang === 'ar') {
+          displayEl.innerHTML = '<span style="color:var(--accent-emerald);">🇸🇦 النسخة العربية (Arabic)</span>';
+        } else {
+          displayEl.innerHTML = '<span style="color:var(--accent-cyan);">🇬🇧 English</span>';
+        }
+      }
+
+      renderModules();
+    }
+
+    // Attach Header Lang Switcher
+    document.querySelectorAll('#header-lang-switcher .lang-switch-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.getAttribute('data-lang');
+        setLanguage(lang);
+      });
+    });
+
+    // Attach Hero Lang Chips
+    document.querySelectorAll('#hero-lang-box .hero-lang-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const lang = chip.getAttribute('data-lang');
+        setLanguage(lang);
+      });
+    });
+
+    // Set initial active state
+    setLanguage(appState.currentLang);
 
     // Navigation Links
     document.querySelectorAll('.header-nav .nav-link').forEach(link => {

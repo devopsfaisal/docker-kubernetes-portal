@@ -83,8 +83,20 @@
         </a>
       </nav>
 
-      <!-- Theme Actions -->
+      <!-- Header Actions: Language Switcher & Theme Toggle -->
       <div class="header-actions">
+        <div class="lang-switcher" id="header-lang-switcher" role="radiogroup" aria-label="Choose Language">
+          <button class="lang-switch-btn active" data-lang="en" title="English Technical Theory">
+            <span class="flag">🇬🇧</span> <span class="lang-text">EN</span>
+          </button>
+          <button class="lang-switch-btn" data-lang="hi" title="Hinglish Classroom Whiteboard Notes">
+            <span class="flag">🇮🇳</span> <span class="lang-text">Hinglish</span>
+          </button>
+          <button class="lang-switch-btn" data-lang="ar" title="النسخة العربية الكاملة">
+            <span class="flag">🇸🇦</span> <span class="lang-text">عربي</span>
+          </button>
+        </div>
+
         <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
           <i class="fa-solid fa-sun"></i>
         </button>
@@ -111,6 +123,39 @@
           Explore architectural blueprints, practical hands-on labs, trilingual explanations
           (<strong>English, Hinglish & Arabic</strong>), and practice in the built-in real-time terminal simulator.
         </p>
+
+        <!-- Interactive Language Selector Banner -->
+        <div class="hero-lang-box" id="hero-lang-box">
+          <div class="hero-lang-title">
+            <i class="fa-solid fa-language"></i> <span>Choose Your Learning Language / अपनी भाषा चुनें / اختر لغتك:</span>
+          </div>
+          <div class="hero-lang-chips">
+            <button class="hero-lang-chip active" data-lang="en">
+              <span class="chip-flag">🇬🇧</span>
+              <div class="chip-info">
+                <span class="chip-title">English</span>
+                <span class="chip-sub">Production Docs</span>
+              </div>
+            </button>
+            <button class="hero-lang-chip" data-lang="hi">
+              <span class="chip-flag">🇮🇳</span>
+              <div class="chip-info">
+                <span class="chip-title">Hinglish (Desi)</span>
+                <span class="chip-sub">Whiteboard & Analogies</span>
+              </div>
+            </button>
+            <button class="hero-lang-chip" data-lang="ar">
+              <span class="chip-flag">🇸🇦</span>
+              <div class="chip-info">
+                <span class="chip-title">النسخة العربية</span>
+                <span class="chip-sub">شرح معماري كامل</span>
+              </div>
+            </button>
+          </div>
+          <div class="hero-lang-status-msg" id="hero-lang-status-msg">
+            <i class="fa-solid fa-circle-check" style="color:#10B981;"></i> Current Mode: <strong id="current-lang-display" style="color:var(--accent-cyan);">🇬🇧 English</strong> &bull; All lecture cards will open in this language by default.
+          </div>
+        </div>
 
         <!-- Stats Grid -->
         <div class="hero-stats-grid">
@@ -287,14 +332,14 @@
 
       <!-- Modal Tabs Bar -->
       <div class="modal-tabs-bar" id="modal-tabs-bar">
-        <button class="modal-tab-btn active" data-tab="theory">
-          <i class="fa-solid fa-book-open"></i> <span>Theory (English)</span>
+        <button class="modal-tab-btn active" data-tab="theory" id="modal-tab-theory">
+          <span>🇬🇧</span> <span>Theory (English)</span>
         </button>
-        <button class="modal-tab-btn" data-tab="desi">
-          <i class="fa-solid fa-chalkboard-user"></i> <span>Desi Notes (Hinglish)</span>
+        <button class="modal-tab-btn" data-tab="desi" id="modal-tab-desi">
+          <span>🇮🇳</span> <span>Desi Notes (Hinglish)</span>
         </button>
-        <button class="modal-tab-btn" data-tab="arabic">
-          <i class="fa-solid fa-language"></i> <span>النسخة العربية (Arabic)</span>
+        <button class="modal-tab-btn" data-tab="arabic" id="modal-tab-arabic">
+          <span>🇸🇦</span> <span>النسخة العربية (Arabic)</span>
         </button>
         <button class="modal-tab-btn" data-tab="lab">
           <i class="fa-solid fa-flask-vial"></i> <span>Hands-On Lab</span>

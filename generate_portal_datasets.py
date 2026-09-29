@@ -122,7 +122,103 @@ K8S_MODULES = [
     }
 ]
 
-def parse_markdown_file(file_path, day_num):
+DAY_01_HINGLISH = """
+<div class="callout desi-callout">
+  📌 <b>Course:</b> Docker & Kubernetes (KR Network Cloud)<br/>
+  🎯 <b>Objective:</b> Containers aur Kubernetes seekhne se pehle Enterprise IT Infrastructure ke core concepts (Virtualization, Networking, Load Balancing, 3-Tier Architecture aur Storage) ko ekdam layman desi bhasha me samajhna.
+</div>
+<h3>1. Containers Kyu Chahiye? (Virtualization vs Containerization)</h3>
+<p>Purane daur se lekar Docker tak ka safar 3 stages me hua:</p>
+<ul>
+  <li><b>Bare Metal (Physical Server):</b> Ek bada joint-family makan jisme ek hi kitchen hai. Agar do bhai alag khana banana chahein (dependency conflict jaise Python 2 vs Python 3), to ladai ho jayegi. Poora physical server ek hi OS chala sakta tha.</li>
+  <li><b>Virtual Machine (VM):</b> Har bande ke liye alag se poora flat khareedna, jisme apna alag drawing room, alag kitchen, alag bathroom ho. Har VM ka apna <b>Guest OS</b> hota hai jo GBs me space, memory aur boot time leta hai (Hypervisor ESXi / KVM / VirtualBox).</li>
+  <li><b>Docker Container:</b> Ek hotel room — sabka apna private room aur lock hai, lekin building ka structure, bijli, paani aur foundation (Host OS Kernel) sab share karte hain. Fast (1 second boot), lightweight (20MB-100MB) aur resource-efficient!</li>
+</ul>
+
+<h3>2. Enterprise 3-Tier Application Architecture</h3>
+<p>Production me koi bhi badi application (jaise NetBanking ya E-Commerce) akeli nahi chalti, wo 3 hisson me banti hoti hai:</p>
+<ol>
+  <li><b>1. Web Server (Nginx / Apache httpd):</b> Yeh gatekeeper hai. HTML, CSS, Images serve karta hai aur HTTPS encryption ko decrypt karta hai (SSL Termination).</li>
+  <li><b>2. Middleware / Application Server (Tomcat / Node.js / Spring Boot):</b> Actual business logic (jaise <code>calculateDiscount()</code>, <code>processPayment()</code>) yahan run hoti hai.</li>
+  <li><b>3. Database (MySQL / PostgreSQL / Oracle):</b> Permanent data storage (User credentials, bank balance, order details).</li>
+</ol>
+
+<h3>3. Load Balancing: Layer 4 vs Layer 7 (Desi Analogy)</h3>
+<ul>
+  <li><b>Layer 4 (Transport Layer):</b> Courier boy jo packet khole bina sirf bahar likha <b>Pincode (IP:Port)</b> dekh kar deliver karta hai. Bohot fast hota hai (Kubernetes me Service <code>ClusterIP/NodePort</code>).</li>
+  <li><b>Layer 7 (Application Layer):</b> Receptionist jo chithhi khol kar (URL path jaise <code>/payment</code> ya <code>/search</code>, HTTP headers, cookies) padhti hai aur sahi department me bhejti hai (Kubernetes me <code>Ingress Controller</code>).</li>
+</ul>
+"""
+
+DAY_01_ARABIC = """
+<div class="callout arabic-callout" style="direction:rtl; text-align:right;">
+  📌 <b>الدورة:</b> دوكر وكوبرنيتس للمحترفين (KR Network Cloud)<br/>
+  🎯 <b>الهدف:</b> فهم المبادئ الأساسية للبنية التحتية السحابية والمقارنة بين الخوادم الفيزيائية والافتراضية والحاويات.
+</div>
+<div class="arabic" style="direction:rtl; text-align:right;">
+  <h3>1. لماذا نحتاج إلى الحاويات؟ (مراحل تطور البنية التحتية)</h3>
+  <ul>
+    <li><b>الخوادم الفيزيائية (Bare Metal):</b> تشغيل نظام تشغيل واحد ومجموعة تطبيقات مباشرة على العتاد، مما يؤدي إلى تعارض الحزم والمكتبات.</li>
+    <li><b>الأجهزة الافتراضية (Virtual Machines):</b> عزل كامل من خلال مشغل (Hypervisor)، حيث تملك كل آلة نظام تشغيل كامل (Guest OS) يستهلك غيغابايتات عديدة ودقائق للإقلاع.</li>
+    <li><b>الحاويات (Docker Containers):</b> عزل مرن وعالي الكفاءة يشارك نواة النظام المضيف (Host Kernel) ويقلع في ثوانٍ معدودة بحجم ميغابايتات بسيطة.</li>
+  </ul>
+
+  <h3>2. معمارية التطبيقات ثلاثية الطبقات (3-Tier Architecture)</h3>
+  <p>خادم الويب (Web Tier: Nginx) لاستقبال حركة المرور وإنهاء التشفير SSL، وخادم التطبيقات (App Tier) لمعالجة منطق الأعمال، وقاعدة البيانات (Database Tier) للتخزين الدائم.</p>
+
+  <h3>3. موازنة الأحمال (L4 vs L7 Load Balancing)</h3>
+  <p><b>الطبقة الرابعة (Layer 4):</b> التوجيه بناءً على بروتوكول TCP/UDP والمنفذ وعنوان IP (مثل K8s Service).<br/>
+  <b>الطبقة السابعة (Layer 7):</b> التوجيه الذكي بناءً على مسار الرابط والترويسات (مثل K8s Ingress Controller).</p>
+</div>
+"""
+
+DAY_02_HINGLISH = """
+<div class="callout desi-callout">
+  📌 <b>Course:</b> Docker & Kubernetes (KR Network Cloud)<br/>
+  🎯 <b>Objective:</b> Container asal me kya hota hai (Linux Namespaces aur Cgroups), Docker Engine architecture (dockerd, containerd, runc), aur container lifecycle commands.
+</div>
+<h3>1. Container Asal Me Kya Hai? (No Magic, Sirf Linux Process!)</h3>
+<p>Container koi mini virtual machine nahi hai! Yeh sirf ek normal Linux process hai jiske charo taraf do boundaries hoti hain:</p>
+<ul>
+  <li><b>Linux Namespaces (Aankhon par patti / Horse Blinkers):</b> Ghode ki aankhon par jaise patti bandhi hoti hai taaki wo sirf aage ka rasta dekhe, waise hi Namespaces process ko restrict karte hain ki wo sirf apna process ID (PID 1), apna network card (eth0), aur apna root filesystem dekh sake. Baki system se wo anjaan rehta hai.</li>
+  <li><b>Control Groups - cgroups (Ration Card / Budget):</b> Chahe kitni bhi bhookh ho, ration card ke mutabiq sirf 2 CPU aur 4GB RAM hi milegi. Yeh kisi ek container ko poore server ka CPU/RAM khane se rokta hai (OOM Killer se bachata hai).</li>
+</ul>
+
+<h3>2. Docker Engine Under the Hood</h3>
+<ol>
+  <li><b>Docker CLI:</b> Client command line tool jo user chalata hai (<code>docker run</code>).</li>
+  <li><b>dockerd:</b> High-level daemon jo REST API accept karta hai aur images/volumes manage karta hai.</li>
+  <li><b>containerd:</b> Industry-standard runtime jo images pull karta hai aur container lifecycle chalata hai.</li>
+  <li><b>runc:</b> Low-level tool jo kernel ke system calls (<code>clone</code>, <code>unshare</code>) chala kar actual container banata hai.</li>
+  <li><b>containerd-shim:</b> Tiny process jo container ko zinda rakhti hai chahe dockerd restart ho jaye (Daemonless Containers).</li>
+</ol>
+
+<h3>3. Golden Rule: Container Band Kyu Ho Jata Hai?</h3>
+<p><b>⚠️ Golden Rule:</b> Container tab tak zinda rehta hai jab tak uska main foreground process (PID 1) run ho raha hai. Agar PID 1 khatam ya background me chala gaya, to kernel poora container exit kar deta hai!</p>
+"""
+
+DAY_02_ARABIC = """
+<div class="callout arabic-callout" style="direction:rtl; text-align:right;">
+  📌 <b>الدورة:</b> دوكر وكوبرنيتس للمحترفين (KR Network Cloud)<br/>
+  🎯 <b>الهدف:</b> تفكيك المفهوم الهندسي للحاويات على مستوى نواة لينكس وفهم معمارية محرك دوكر (dockerd, containerd, runc).
+</div>
+<div class="arabic" style="direction:rtl; text-align:right;">
+  <h3>1. ما هي الحاوية الحقيقية؟ (ليست آلة افتراضية!)</h3>
+  <p>الحاوية هي مجرد عملية لينكس قياسية (Standard Linux Process) معزولة بواسطة ميزتين رئيسيتين في النواة:</p>
+  <ul>
+    <li><b>Linux Namespaces:</b> توفر العزل التام لما يمكن للعملية أن تراه (عزل الشبكة، مساحة المعرفات PID، نظام الملفات، المستخدمين).</li>
+    <li><b>Control Groups (cgroups):</b> تفرض حدوداً صارمة على الموارد (تحديد استهلاك المعالج CPU والذاكرة RAM ومنع استنزاف الخادم).</li>
+  </ul>
+
+  <h3>2. معمارية محرك دوكر (Docker Engine Architecture)</h3>
+  <p>يتكون من العميل (Docker CLI)، وخادم الخلفية (dockerd)، ومحرك الإدارة (containerd)، ومطلق العمليات منخفض المستوى (runc)، و (containerd-shim) لتشغيل الحاويات دون انقطاع حتى في حال إعادة تشغيل المحرك.</p>
+
+  <h3>3. القاعدة الذهبية: لماذا تتوقف الحاوية عن العمل؟</h3>
+  <p>تعيش الحاوية طالما أن العملية الرئيسية الأولى (PID 1) قيد التشغيل في الواجهة الأمامية. بمجرد انتهاء هذه العملية، ينتهي عمر الحاوية فوراً.</p>
+</div>
+"""
+
+def parse_markdown_and_html(file_path, day_num):
     with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
         text = f.read()
 
@@ -149,7 +245,6 @@ def parse_markdown_file(file_path, day_num):
 
     # Extract Q&A
     qa_list = []
-    # format: 1. **Question?**\n - Answer
     qa_matches = re.findall(r"\d+\.\s+\*\*(.+?)\*\*\s*\n\s*[-*]\s*(.+?)(?=\n\d+\.|\n##|\Z)", text, re.DOTALL)
     for q, a in qa_matches:
         qa_list.append({"q": q.strip(), "a": a.strip()})
@@ -164,6 +259,27 @@ def parse_markdown_file(file_path, day_num):
     is_docker = day_num <= 14
     target_modules = DOCKER_MODULES if is_docker else K8S_MODULES
     mod = next((m for m in target_modules if day_num in m["lectures"]), target_modules[0])
+
+    # Extract Hinglish & Arabic from .html file
+    html_path = file_path.replace(".md", ".html")
+    hinglish_html = ""
+    arabic_html = ""
+    if os.path.exists(html_path):
+        html_content = open(html_path, "r", encoding="utf-8", errors="ignore").read()
+        h_match = re.search(r"<summary>[^<]*Hinglish[^<]*</summary>(.*?)</details>", html_content, re.DOTALL | re.IGNORECASE)
+        a_match = re.search(r"<summary>[^<]*Arabic[^<]*</summary>(.*?)</details>", html_content, re.DOTALL | re.IGNORECASE)
+        if h_match:
+            hinglish_html = h_match.group(1).strip()
+        if a_match:
+            arabic_html = a_match.group(1).strip()
+
+    # Fallbacks for Day 1 and Day 2
+    if day_num == 1:
+        hinglish_html = DAY_01_HINGLISH.strip()
+        arabic_html = DAY_01_ARABIC.strip()
+    elif day_num == 2:
+        hinglish_html = DAY_02_HINGLISH.strip()
+        arabic_html = DAY_02_ARABIC.strip()
 
     return {
         "id": day_num,
@@ -188,11 +304,12 @@ def parse_markdown_file(file_path, day_num):
         "qa": qa_list if qa_list else [
             {"q": f"What is the key takeaway of Day {day_num}?", "a": clean_title},
             {"q": "How does this apply in a production environment?", "a": "Ensures zero-downtime, fault-tolerance, and scalable cloud-native workloads."}
-        ]
+        ],
+        "hinglishHtml": hinglish_html,
+        "arabicHtml": arabic_html
     }
 
-print("[*] Processing all 27 markdown files...")
-all_days = []
+print("[*] Processing all 27 markdown & html files...")
 file_mapping = {
     1: "Day-01-Course-Introduction.md",
     2: "Day-02-Container-Introductions.md",
@@ -230,7 +347,7 @@ for day in range(1, 28):
     fname = file_mapping[day]
     fpath = os.path.join(notes_dir, fname)
     if os.path.exists(fpath):
-        parsed = parse_markdown_file(fpath, day)
+        parsed = parse_markdown_and_html(fpath, day)
         if day <= 14:
             docker_lectures.append(parsed)
         else:
@@ -244,11 +361,11 @@ with open(os.path.join(js_dir, "dockerData.js"), "w", encoding="utf-8") as f:
     f.write("/**\n * KR Network Cloud - Docker Mastery Dataset (Days 01 to 14)\n */\n\n")
     f.write(f"window.DOCKER_MODULES = {json.dumps(DOCKER_MODULES, indent=2)};\n\n")
     f.write(f"window.DOCKER_LECTURES = {json.dumps(docker_lectures, indent=2)};\n")
-print("[+] Generated js/dockerData.js successfully.")
+print("[+] Generated js/dockerData.js successfully with Hinglish & Arabic.")
 
 # Write js/k8sData.js
 with open(os.path.join(js_dir, "k8sData.js"), "w", encoding="utf-8") as f:
     f.write("/**\n * KR Network Cloud - Kubernetes Masterclass Dataset (Days 15 to 27)\n */\n\n")
     f.write(f"window.K8S_MODULES = {json.dumps(K8S_MODULES, indent=2)};\n\n")
     f.write(f"window.K8S_LECTURES = {json.dumps(k8s_lectures, indent=2)};\n")
-print("[+] Generated js/k8sData.js successfully.")
+print("[+] Generated js/k8sData.js successfully with Hinglish & Arabic.")
