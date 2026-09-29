@@ -1,4 +1,4 @@
-# 🐳☸️ KR Network Cloud — Docker & Kubernetes Production Mastery Portal
+# 🐳☸️ Docker & Kubernetes Production Mastery Portal
 
 [![GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue?style=for-the-badge&logo=github)](https://devopsfaisal.github.io/docker-kubernetes-portal/)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
@@ -6,7 +6,7 @@
 [![CKA Exam Ready](https://img.shields.io/badge/CKA-Certified%20Kubernetes%20Administrator-brightgreen?style=for-the-badge&logo=linuxfoundation)](https://www.cncf.io/certification/cka/)
 [![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
 
-An enterprise-grade, single-page progressive web portal housing the complete **27-Day Production Engineering Curriculum (169 In-depth Lectures)** from KR Network Cloud. 
+An enterprise-grade, single-page progressive web portal housing the complete **27-Day Production Engineering Curriculum (169 In-depth Lectures)**. 
 
 Designed with modern glassmorphism aesthetics, dynamic **Mermaid.js** architecture blueprints, trilingual educational parity (**English**, **Hinglish**, **Arabic**), comprehensive CKA practice scenarios, and a built-in **interactive real-time browser terminal simulator** (`docker`, `kubectl`, `helm`, `etcdctl`).
 
@@ -24,7 +24,7 @@ Designed with modern glassmorphism aesthetics, dynamic **Mermaid.js** architectu
 
 ### 2. 🌐 Trilingual Education Parity (3 Languages in Every Lecture Modal)
 - **English (Technical Production)**: In-depth production documentation, edge-case troubleshooting, enterprise best practices, and security hardening.
-- **Hinglish (Desi Whiteboard Classroom)**: Intuitive, conversational Hindi-English explanations replicating the mentor's whiteboard delivery.
+- **Hinglish (Classroom Whiteboard Notes)**: Intuitive, conversational Hindi-English explanations with practical analogies.
 - **Arabic (الملخص الشامل)**: Polished, professional Arabic technical summaries covering core architectural pillars.
 
 ### 3. 📐 Live Mermaid.js System Architecture
@@ -66,7 +66,7 @@ The portal is a pure static web application with zero external runtime dependenc
 
 ```bash
 # Navigate to the portal directory
-cd krcloud-docker-kubernetes-portal
+cd docker-kubernetes-portal
 
 # Start a local python server
 python3 -m http.server 8000
@@ -91,7 +91,7 @@ To deploy this portal directly under your personal GitHub domain (e.g. `https://
 Run the following commands:
 
 ```bash
-cd /Users/deadpool/.gemini/antigravity/scratch/krcloud-docker-kubernetes-portal
+cd docker-kubernetes-portal
 
 # Link to your remote GitHub repository using SSH
 git remote add origin git@github.com:devopsfaisal/docker-kubernetes-portal.git
@@ -125,6 +125,5 @@ git push -u origin main
 ---
 
 ## 👨‍💻 Author & Acknowledgements
-- **Content Reference**: KR Network Cloud Docker & Kubernetes 27-Day Production Bootcamp.
 - **Curated & Built for**: **devopsfaisal** (`https://devopsfaisal.github.io/`)
 - **License**: MIT Open Source License. Free to use, fork, and share for educational and production reference.

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   KR Network Cloud - Components Stylesheet
+   Docker & Kubernetes Production Mastery - Components Stylesheet
    Modals, Tabs, Code Syntax, Cheatsheets, Quiz & Web Terminal Lab
    ========================================================================== */
 
@@ -252,7 +252,7 @@
   margin-bottom: 1.5rem;
 }
 
-.callout-box.desi-box {
+.callout-box.hinglish-box {
   background: rgba(245, 158, 11, 0.08);
   border-left-color: var(--accent-amber);
 }

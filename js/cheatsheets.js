@@ -1,5 +1,5 @@
 /**
- * KR Network Cloud - Docker & Kubernetes Cheatsheet Data
+ * Docker & Kubernetes Production Cheatsheet Data
  */
 
 window.CHEATSHEETS_DATA = [

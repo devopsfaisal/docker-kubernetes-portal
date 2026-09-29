@@ -122,10 +122,26 @@ K8S_MODULES = [
     }
 ]
 
+def sanitize_text(text):
+    if not text:
+        return ""
+    # Remove KR Network references
+    text = re.sub(r"KR\s*Network\s*Cloud", "Production DevOps Engineering", text, flags=re.IGNORECASE)
+    text = re.sub(r"KR\s*Network", "Cloud DevOps", text, flags=re.IGNORECASE)
+    # Remove Desi references
+    text = re.sub(r"Desi\s*Example", "Real-Life Analogy", text, flags=re.IGNORECASE)
+    text = re.sub(r"Desi\s*Analogy", "Real-Life Analogy", text, flags=re.IGNORECASE)
+    text = re.sub(r"Desi\s*Samjhauta", "Core Concepts", text, flags=re.IGNORECASE)
+    text = re.sub(r"Desi\s*Notes", "Hinglish Notes", text, flags=re.IGNORECASE)
+    text = re.sub(r"Desi\s*Classroom", "Classroom", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bDesi\b", "Classroom", text)
+    text = re.sub(r"\bdesi\b", "classroom", text)
+    return text
+
 DAY_01_HINGLISH = """
-<div class="callout desi-callout">
-  📌 <b>Course:</b> Docker & Kubernetes (KR Network Cloud)<br/>
-  🎯 <b>Objective:</b> Containers aur Kubernetes seekhne se pehle Enterprise IT Infrastructure ke core concepts (Virtualization, Networking, Load Balancing, 3-Tier Architecture aur Storage) ko ekdam layman desi bhasha me samajhna.
+<div class="callout hinglish-callout">
+  📌 <b>Course:</b> Docker & Kubernetes Production Engineering<br/>
+  🎯 <b>Objective:</b> Containers aur Kubernetes seekhne se pehle Enterprise IT Infrastructure ke core concepts (Virtualization, Networking, Load Balancing, 3-Tier Architecture aur Storage) ko ekdam aasan layman bhasha me samajhna.
 </div>
 <h3>1. Containers Kyu Chahiye? (Virtualization vs Containerization)</h3>
 <p>Purane daur se lekar Docker tak ka safar 3 stages me hua:</p>
@@ -143,7 +159,7 @@ DAY_01_HINGLISH = """
   <li><b>3. Database (MySQL / PostgreSQL / Oracle):</b> Permanent data storage (User credentials, bank balance, order details).</li>
 </ol>
 
-<h3>3. Load Balancing: Layer 4 vs Layer 7 (Desi Analogy)</h3>
+<h3>3. Load Balancing: Layer 4 vs Layer 7 (Real-Life Analogy)</h3>
 <ul>
   <li><b>Layer 4 (Transport Layer):</b> Courier boy jo packet khole bina sirf bahar likha <b>Pincode (IP:Port)</b> dekh kar deliver karta hai. Bohot fast hota hai (Kubernetes me Service <code>ClusterIP/NodePort</code>).</li>
   <li><b>Layer 7 (Application Layer):</b> Receptionist jo chithhi khol kar (URL path jaise <code>/payment</code> ya <code>/search</code>, HTTP headers, cookies) padhti hai aur sahi department me bhejti hai (Kubernetes me <code>Ingress Controller</code>).</li>
@@ -152,7 +168,7 @@ DAY_01_HINGLISH = """
 
 DAY_01_ARABIC = """
 <div class="callout arabic-callout" style="direction:rtl; text-align:right;">
-  📌 <b>الدورة:</b> دوكر وكوبرنيتس للمحترفين (KR Network Cloud)<br/>
+  📌 <b>الدورة:</b> دوكر وكوبرنيتس للمحترفين (DevOps Production)<br/>
   🎯 <b>الهدف:</b> فهم المبادئ الأساسية للبنية التحتية السحابية والمقارنة بين الخوادم الفيزيائية والافتراضية والحاويات.
 </div>
 <div class="arabic" style="direction:rtl; text-align:right;">
@@ -173,8 +189,8 @@ DAY_01_ARABIC = """
 """
 
 DAY_02_HINGLISH = """
-<div class="callout desi-callout">
-  📌 <b>Course:</b> Docker & Kubernetes (KR Network Cloud)<br/>
+<div class="callout hinglish-callout">
+  📌 <b>Course:</b> Docker & Kubernetes Production Engineering<br/>
   🎯 <b>Objective:</b> Container asal me kya hota hai (Linux Namespaces aur Cgroups), Docker Engine architecture (dockerd, containerd, runc), aur container lifecycle commands.
 </div>
 <h3>1. Container Asal Me Kya Hai? (No Magic, Sirf Linux Process!)</h3>
@@ -199,7 +215,7 @@ DAY_02_HINGLISH = """
 
 DAY_02_ARABIC = """
 <div class="callout arabic-callout" style="direction:rtl; text-align:right;">
-  📌 <b>الدورة:</b> دوكر وكوبرنيتس للمحترفين (KR Network Cloud)<br/>
+  📌 <b>الدورة:</b> دوكر وكوبرنيتس للمحترفين (DevOps Production)<br/>
   🎯 <b>الهدف:</b> تفكيك المفهوم الهندسي للحاويات على مستوى نواة لينكس وفهم معمارية محرك دوكر (dockerd, containerd, runc).
 </div>
 <div class="arabic" style="direction:rtl; text-align:right;">
@@ -221,6 +237,9 @@ DAY_02_ARABIC = """
 def parse_markdown_and_html(file_path, day_num):
     with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
         text = f.read()
+
+    # Sanitize markdown text
+    text = sanitize_text(text)
 
     # Extract title
     title_match = re.search(r"^#\s+(.+)$", text, re.MULTILINE)
@@ -247,13 +266,13 @@ def parse_markdown_and_html(file_path, day_num):
     qa_list = []
     qa_matches = re.findall(r"\d+\.\s+\*\*(.+?)\*\*\s*\n\s*[-*]\s*(.+?)(?=\n\d+\.|\n##|\Z)", text, re.DOTALL)
     for q, a in qa_matches:
-        qa_list.append({"q": q.strip(), "a": a.strip()})
+        qa_list.append({"q": sanitize_text(q.strip()), "a": sanitize_text(a.strip())})
 
     # Find key concepts
     concepts = []
     concept_matches = re.findall(r"[-*]\s+\*\*([^:]+):\*\*\s*([^\n]+)", text)
     for c_title, c_desc in concept_matches[:5]:
-        concepts.append(f"<strong>{c_title.strip()}:</strong> {c_desc.strip()}")
+        concepts.append(f"<strong>{sanitize_text(c_title.strip())}:</strong> {sanitize_text(c_desc.strip())}")
 
     # Determine module
     is_docker = day_num <= 14
@@ -269,9 +288,9 @@ def parse_markdown_and_html(file_path, day_num):
         h_match = re.search(r"<summary>[^<]*Hinglish[^<]*</summary>(.*?)</details>", html_content, re.DOTALL | re.IGNORECASE)
         a_match = re.search(r"<summary>[^<]*Arabic[^<]*</summary>(.*?)</details>", html_content, re.DOTALL | re.IGNORECASE)
         if h_match:
-            hinglish_html = h_match.group(1).strip()
+            hinglish_html = sanitize_text(h_match.group(1).strip())
         if a_match:
-            arabic_html = a_match.group(1).strip()
+            arabic_html = sanitize_text(a_match.group(1).strip())
 
     # Fallbacks for Day 1 and Day 2
     if day_num == 1:
@@ -309,7 +328,7 @@ def parse_markdown_and_html(file_path, day_num):
         "arabicHtml": arabic_html
     }
 
-print("[*] Processing all 27 markdown & html files...")
+print("[*] Processing all 27 markdown & html files with sanitization...")
 file_mapping = {
     1: "Day-01-Course-Introduction.md",
     2: "Day-02-Container-Introductions.md",
@@ -358,14 +377,14 @@ print(f"[+] Parsed {len(docker_lectures)} Docker days and {len(k8s_lectures)} Ku
 # Write js/dockerData.js
 js_dir = "/Users/deadpool/.gemini/antigravity/scratch/krcloud-docker-kubernetes-portal/js"
 with open(os.path.join(js_dir, "dockerData.js"), "w", encoding="utf-8") as f:
-    f.write("/**\n * KR Network Cloud - Docker Mastery Dataset (Days 01 to 14)\n */\n\n")
+    f.write("/**\n * Docker Mastery Dataset (Days 01 to 14)\n */\n\n")
     f.write(f"window.DOCKER_MODULES = {json.dumps(DOCKER_MODULES, indent=2)};\n\n")
     f.write(f"window.DOCKER_LECTURES = {json.dumps(docker_lectures, indent=2)};\n")
-print("[+] Generated js/dockerData.js successfully with Hinglish & Arabic.")
+print("[+] Generated js/dockerData.js successfully sanitized.")
 
 # Write js/k8sData.js
 with open(os.path.join(js_dir, "k8sData.js"), "w", encoding="utf-8") as f:
-    f.write("/**\n * KR Network Cloud - Kubernetes Masterclass Dataset (Days 15 to 27)\n */\n\n")
+    f.write("/**\n * Kubernetes Masterclass Dataset (Days 15 to 27)\n */\n\n")
     f.write(f"window.K8S_MODULES = {json.dumps(K8S_MODULES, indent=2)};\n\n")
     f.write(f"window.K8S_LECTURES = {json.dumps(k8s_lectures, indent=2)};\n")
-print("[+] Generated js/k8sData.js successfully with Hinglish & Arabic.")
+print("[+] Generated js/k8sData.js successfully sanitized.")

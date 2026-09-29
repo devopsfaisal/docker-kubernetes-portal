@@ -1,5 +1,5 @@
 /**
- * KR Network Cloud - Docker & Kubernetes Portal Controller
+ * Docker & Kubernetes Production Mastery Portal Controller
  * Full routing, lecture modals, Mermaid integration, themes & interactive views
  */
 
@@ -11,9 +11,9 @@
     activeFilter: 'all',
     searchQuery: '',
     currentDayId: 1,
-    currentLang: localStorage.getItem('krcloud_preferred_lang') || 'en', // 'en', 'hi', 'ar'
-    completedDays: new Set(JSON.parse(localStorage.getItem('krcloud_completed_days') || '[]')),
-    theme: localStorage.getItem('krcloud_theme') || 'dark'
+    currentLang: localStorage.getItem('k8s_portal_preferred_lang') || 'en', // 'en', 'hi', 'ar'
+    completedDays: new Set(JSON.parse(localStorage.getItem('k8s_portal_completed_days') || '[]')),
+    theme: localStorage.getItem('k8s_portal_theme') || 'dark'
   };
 
   // DOM Elements
@@ -63,7 +63,7 @@
   function applyTheme(theme) {
     appState.theme = theme;
     el.html.setAttribute('data-theme', theme);
-    localStorage.setItem('krcloud_theme', theme);
+    localStorage.setItem('k8s_portal_theme', theme);
     if (el.themeToggleBtn) {
       el.themeToggleBtn.innerHTML = theme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
     }
@@ -205,7 +205,7 @@
   function renderLectureCard(lec) {
     const isCompleted = appState.completedDays.has(lec.dayNum);
     const langBadge = appState.currentLang === 'hi'
-      ? '<span class="feature-badge" style="color:var(--accent-amber); font-weight:700;"><span style="margin-right:2px;">🇮🇳</span> Desi Notes Ready</span>'
+      ? '<span class="feature-badge" style="color:var(--accent-amber); font-weight:700;"><span style="margin-right:2px;">🇮🇳</span> Hinglish Notes Ready</span>'
       : appState.currentLang === 'ar'
       ? '<span class="feature-badge" style="color:var(--accent-emerald); font-weight:700;"><span style="margin-right:2px;">🇸🇦</span> شرح عربي متاح</span>'
       : '<span class="feature-badge" style="color:var(--accent-cyan); font-weight:700;"><span style="margin-right:2px;">🇬🇧</span> Theory (EN)</span>';
@@ -265,7 +265,7 @@
 
     // Reset to preferred language tab
     if (appState.currentLang === 'hi') {
-      activateModalTab('desi');
+      activateModalTab('hinglish');
     } else if (appState.currentLang === 'ar') {
       activateModalTab('arabic');
     } else {
@@ -279,7 +279,7 @@
 
   function renderModalPanes(lec) {
     const paneTheory = document.getElementById('pane-theory');
-    const paneDesi = document.getElementById('pane-desi');
+    const paneHinglish = document.getElementById('pane-hinglish');
     const paneArabic = document.getElementById('pane-arabic');
     const paneLab = document.getElementById('pane-lab');
     const paneArch = document.getElementById('pane-arch');
@@ -308,15 +308,15 @@
       </div>
     `;
 
-    // 2. Desi Notes Pane (Hinglish)
-    paneDesi.innerHTML = `
-      <div class="callout-box desi-box">
-        <p><strong>🇮🇳 आसान भाषा में (Desi Classroom Whiteboard Notes):</strong></p>
-        <p style="margin-top:0.35rem;">Technical jargon ko chhod kar real-life desi analogies aur practical takeaways ke sath concept ko samjhein.</p>
+    // 2. Hinglish Notes Pane
+    paneHinglish.innerHTML = `
+      <div class="callout-box hinglish-box">
+        <p><strong>🇮🇳 आसान भाषा में (Classroom Whiteboard Notes):</strong></p>
+        <p style="margin-top:0.35rem;">Technical jargon ko chhod kar practical analogies aur takeaways ke sath concept ko samjhein.</p>
       </div>
 
       <div class="content-section">
-        <h3 class="content-heading" style="color:var(--accent-amber);"><i class="fa-solid fa-chalkboard-user"></i> Desi Samjhauta & Real-Life Fundas</h3>
+        <h3 class="content-heading" style="color:var(--accent-amber);"><i class="fa-solid fa-chalkboard-user"></i> Conceptual Breakdown & Practical Analogies</h3>
         <div style="color:var(--text-secondary); line-height:1.8; font-size:0.95rem; margin-bottom:1.5rem;">
           ${lec.hinglishHtml || `
             <ul class="key-concepts-list">
@@ -619,7 +619,7 @@
     // Language Switcher Events
     function setLanguage(lang) {
       appState.currentLang = lang;
-      localStorage.setItem('krcloud_preferred_lang', lang);
+      localStorage.setItem('k8s_portal_preferred_lang', lang);
 
       // Update Header buttons
       document.querySelectorAll('#header-lang-switcher .lang-switch-btn').forEach(btn => {
@@ -635,7 +635,7 @@
       const displayEl = document.getElementById('current-lang-display');
       if (displayEl) {
         if (lang === 'hi') {
-          displayEl.innerHTML = '<span style="color:var(--accent-amber);">🇮🇳 Hinglish (Desi Notes)</span>';
+          displayEl.innerHTML = '<span style="color:var(--accent-amber);">🇮🇳 Hinglish Notes</span>';
         } else if (lang === 'ar') {
           displayEl.innerHTML = '<span style="color:var(--accent-emerald);">🇸🇦 النسخة العربية (Arabic)</span>';
         } else {
@@ -739,7 +739,7 @@
         } else {
           appState.completedDays.add(id);
         }
-        localStorage.setItem('krcloud_completed_days', JSON.stringify(Array.from(appState.completedDays)));
+        localStorage.setItem('k8s_portal_completed_days', JSON.stringify(Array.from(appState.completedDays)));
 
         const isDone = appState.completedDays.has(id);
         el.modalCompleteBtn.classList.toggle('active', isDone);

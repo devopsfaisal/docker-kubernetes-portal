@@ -1,5 +1,5 @@
 /**
- * KR Network Cloud - Interactive Web Terminal Simulator
+ * Interactive Web Terminal Simulator
  * Realistic Docker, Kubernetes (kubectl), Helm & ETCD Lab Engine
  */
 
@@ -124,7 +124,7 @@
     }
 
     if (cmd === 'help') {
-      return `<span style="color:#10B981; font-weight:bold;">KR Network Cloud Interactive Terminal</span>
+      return `<span style="color:#10B981; font-weight:bold;">Cloud DevOps Interactive Terminal</span>
 Available command suites:
   • <span style="color:#0DB7ED;">docker</span>     : run, ps, images, stop, rm, volume, network, build
   • <span style="color:#326CE5;">kubectl</span>    : get (nodes, pods, svc, deploy), describe, run, delete, drain, uncordon, top

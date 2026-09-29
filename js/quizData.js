@@ -1,5 +1,5 @@
 /**
- * KR Network Cloud - Docker & Kubernetes Exam Quiz Bank
+ * Docker & Kubernetes Production Exam Quiz Bank
  */
 
 window.QUIZ_DATA = [
