@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KR Network Cloud - Docker & Kubernetes Production Mastery Portal</title>
+  <meta name="description"
+    content="Complete 27-day production engineering curriculum for Docker, Kubernetes, CKA scenarios, and cloud architecture. Includes trilingual notes (English, Hinglish, Arabic), Mermaid diagrams, and an interactive real-time web terminal lab.">
+  <meta name="keywords"
+    content="Docker, Kubernetes, CKA, Devops, Containers, Calico, Ingress, RBAC, StatefulSet, Helm, Prometheus, KR Network Cloud, Hindi Kubernetes Tutorial">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23326CE5'/><text y='70' x='15' font-size='60' font-family='sans-serif' font-weight='bold' fill='%23FFF'>K8s</text></svg>">
+
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Mermaid.js for Dynamic Architecture Diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#0F172A',
+        primaryColor: '#326CE5',
+        primaryTextColor: '#F8FAFC',
+        primaryBorderColor: '#38BDF8',
+        lineColor: '#38BDF8',
+        secondaryColor: '#1E293B',
+        tertiaryColor: '#162036'
+      }
+    });
+  </script>
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#" class="logo-brand" id="logo-brand">
+        <span class="logo-badge" id="logo-badge"><i class="fa-solid fa-dharmachakra"></i> KR</span>
+        <span class="logo-text">Cloud<span>DevOps</span></span>
+      </a>
+
+      <!-- Course Switcher -->
+      <div class="course-switcher" id="course-switcher" role="tablist" aria-label="Course selection">
+        <button class="course-switch-btn active" data-course="docker" id="switch-course-docker" role="tab"
+          aria-selected="true">
+          <i class="fa-brands fa-docker"></i> <span>Docker Mastery (14 Days)</span>
+        </button>
+        <button class="course-switch-btn" data-course="k8s" id="switch-course-k8s" role="tab" aria-selected="false">
+          <i class="fa-solid fa-dharmachakra"></i> <span>Kubernetes (13 Days)</span>
+        </button>
+      </div>
+
+      <!-- Main Navigation Views -->
+      <nav class="header-nav">
+        <a class="nav-link active" data-view="lectures" id="nav-lectures">
+          <i class="fa-solid fa-graduation-cap"></i> <span id="nav-lectures-label">27 Days Portal</span>
+        </a>
+        <a class="nav-link terminal-nav" data-view="terminal" id="nav-terminal">
+          <i class="fa-solid fa-terminal"></i> <span>Web Terminal Lab</span>
+        </a>
+        <a class="nav-link" data-view="cheatsheets" id="nav-cheatsheets">
+          <i class="fa-solid fa-table-columns"></i> Cheatsheets
+        </a>
+        <a class="nav-link" data-view="quiz" id="nav-quiz">
+          <i class="fa-solid fa-circle-question"></i> Exam Quiz
+        </a>
+      </nav>
+
+      <!-- Theme Actions -->
+      <div class="header-actions">
+        <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
+          <i class="fa-solid fa-sun"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View: Lectures & Days -->
+  <main id="main-lectures-view">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-badge-pill" id="hero-badge-pill">
+          <i class="fa-solid fa-shield-halved"></i> KR Network Cloud • Enterprise DevOps Engineering
+        </div>
+
+        <h1 class="hero-title" id="hero-title">
+          Docker & Kubernetes Production Mastery <br>
+          <span class="gradient-text">Complete Architecture & Interactive Lab Portal</span>
+        </h1>
+
+        <p class="hero-subtitle" id="hero-subtitle">
+          Master the complete production curriculum across all <strong>27 Days</strong> and <strong>169 Lectures</strong>.
+          Explore architectural blueprints, practical hands-on labs, trilingual explanations
+          (<strong>English, Hinglish & Arabic</strong>), and practice in the built-in real-time terminal simulator.
+        </p>
+
+        <!-- Stats Grid -->
+        <div class="hero-stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="color:var(--docker-blue);"><i class="fa-brands fa-docker"></i></div>
+            <div class="stat-info">
+              <div class="stat-value" id="hero-stat-docker">14 Days</div>
+              <div class="stat-label">Docker Deep Dive</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="color:var(--k8s-blue);"><i class="fa-solid fa-dharmachakra"></i></div>
+            <div class="stat-info">
+              <div class="stat-value" id="hero-stat-k8s">13 Days</div>
+              <div class="stat-label">Kubernetes Production</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="color:var(--accent-amber);"><i class="fa-solid fa-award"></i></div>
+            <div class="stat-info">
+              <div class="stat-value">17 Scenarios</div>
+              <div class="stat-label">CKA Real-World Labs</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="color:#10B981;"><i class="fa-solid fa-terminal"></i></div>
+            <div class="stat-info">
+              <div class="stat-value">Live Terminal</div>
+              <div class="stat-label">Real-Time Simulation</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="filter-search-container">
+          <div class="search-input-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" class="search-input" id="search-input" placeholder="Search by topic, command (e.g. Ingress, Overlay2, RBAC, ETCD, CKA)...">
+          </div>
+
+          <div class="filter-chips" id="filter-chips">
+            <button class="filter-chip active" data-filter="all">All Topics</button>
+            <button class="filter-chip" data-filter="architecture">Architecture</button>
+            <button class="filter-chip" data-filter="storage">Storage & PV</button>
+            <button class="filter-chip" data-filter="networking">Networking & CNI</button>
+            <button class="filter-chip" data-filter="security">Security & RBAC</button>
+            <button class="filter-chip" data-filter="cka">CKA Exam</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modules & Days Container -->
+    <section class="container">
+      <div class="modules-container" id="modules-container">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Main View: Interactive Web Terminal Lab -->
+  <main id="main-terminal-view" style="display: none;">
+    <section class="container">
+      <div style="margin: 2rem 0 1rem; text-align: center;">
+        <span class="hero-badge-pill" style="border-color:#10B981; color:#10B981; background:rgba(16,185,129,0.12);">
+          <i class="fa-solid fa-terminal"></i> Browser-Based Cloud Sandbox
+        </span>
+        <h2 style="font-family:'Outfit',sans-serif; font-size:2.2rem; font-weight:800; margin-top:0.5rem;">
+          Interactive Docker & Kubernetes Lab Terminal
+        </h2>
+        <p style="color:var(--text-secondary); max-width:700px; margin:0.5rem auto 1.5rem;">
+          Type live Docker and Kubectl commands directly in your browser. Select a practice challenge from the left or run arbitrary commands like <code>docker ps</code>, <code>kubectl get nodes</code>, <code>kubectl get pods -A</code>, <code>etcdctl snapshot save</code> and more!
+        </p>
+      </div>
+
+      <div class="terminal-view-container">
+        <!-- Scenarios Sidebar -->
+        <div class="terminal-scenarios-sidebar">
+          <div class="scenarios-sidebar-title">
+            <i class="fa-solid fa-list-check" style="color:var(--accent-cyan);"></i> Guided Practice Labs
+          </div>
+          <div class="scenarios-list" id="terminal-scenarios-list">
+            <!-- Rendered by terminal.js -->
+          </div>
+        </div>
+
+        <!-- Terminal Console Box -->
+        <div class="terminal-console-box">
+          <div class="terminal-top-bar">
+            <div class="terminal-traffic-lights">
+              <span class="traffic-light red"></span>
+              <span class="traffic-light yellow"></span>
+              <span class="traffic-light green"></span>
+            </div>
+            <div class="terminal-title-text" id="terminal-title-indicator">
+              <i class="fa-solid fa-server" style="color:#10B981; margin-right:4px;"></i> root@k8s-master:~ (Ubuntu 22.04 LTS / k8s v1.29.0)
+            </div>
+            <div class="terminal-toolbar">
+              <button class="terminal-tool-btn" id="terminal-clear-btn" title="Clear Terminal (or type clear)">
+                <i class="fa-solid fa-eraser"></i> Clear
+              </button>
+            </div>
+          </div>
+
+          <div class="terminal-screen" id="terminal-screen-output">
+            <div class="terminal-welcome">
+              Welcome to the <span class="brand">KR Network Cloud Interactive Terminal</span> [Version 1.29.0-k8s]<br>
+              Linux k8s-master-prod 5.15.0-101-generic x86_64 • Cluster status: <span style="color:#10B981; font-weight:700;">Healthy (3 Nodes Active)</span><br>
+              Type <strong style="color:#38BDF8;">help</strong> for available command suites or pick a guided lab from the left.
+            </div>
+          </div>
+
+          <div class="terminal-input-row" style="background:#0F1626; padding:0.75rem 1.25rem; border-top:1px solid rgba(255,255,255,0.08);">
+            <span class="terminal-prompt" id="active-terminal-prompt">root@k8s-master:~#</span>
+            <input type="text" class="terminal-cli-input" id="terminal-cli-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Type command here (e.g. kubectl get nodes, docker ps, help)..." autofocus>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Main View: Cheatsheets -->
+  <main id="main-cheatsheets-view" style="display: none;">
+    <section class="container" style="padding: 3rem 1.5rem;">
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <h2 style="font-family:'Outfit',sans-serif; font-size:2.4rem; font-weight:800;">
+          Production DevOps Cheatsheets
+        </h2>
+        <p style="color:var(--text-secondary); max-width:680px; margin:0.5rem auto;">
+          Curated reference tables for rapid CLI execution during production incidents and CKA exam scenarios.
+        </p>
+      </div>
+
+      <div id="cheatsheets-container" style="display: flex; flex-direction: column; gap: 2rem;">
+        <!-- Rendered by app.js from cheatsheets.js -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Main View: Exam Quiz -->
+  <main id="main-quiz-view" style="display: none;">
+    <section class="container" style="padding: 3rem 1.5rem; max-width: 860px;">
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <h2 style="font-family:'Outfit',sans-serif; font-size:2.4rem; font-weight:800;">
+          Docker & CKA Exam Quiz Practice
+        </h2>
+        <p style="color:var(--text-secondary); margin:0.5rem auto;">
+          Test your mastery of core container internals, CKA troubleshooting, networking, and scheduling.
+        </p>
+      </div>
+
+      <div id="quiz-container">
+        <!-- Rendered by app.js from quizData.js -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Lecture Details Modal Window -->
+  <div class="modal-backdrop" id="lecture-modal-backdrop">
+    <div class="modal-container" role="dialog" aria-modal="true">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-header-info">
+          <span class="modal-day-pill" id="modal-day-pill">Day 01</span>
+          <h2 class="modal-lecture-title" id="modal-lecture-title">Lecture Title</h2>
+        </div>
+        <button class="modal-close-btn" id="modal-close-btn" aria-label="Close modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Modal Tabs Bar -->
+      <div class="modal-tabs-bar" id="modal-tabs-bar">
+        <button class="modal-tab-btn active" data-tab="theory">
+          <i class="fa-solid fa-book-open"></i> <span>Theory (English)</span>
+        </button>
+        <button class="modal-tab-btn" data-tab="desi">
+          <i class="fa-solid fa-chalkboard-user"></i> <span>Desi Notes (Hinglish)</span>
+        </button>
+        <button class="modal-tab-btn" data-tab="arabic">
+          <i class="fa-solid fa-language"></i> <span>النسخة العربية (Arabic)</span>
+        </button>
+        <button class="modal-tab-btn" data-tab="lab">
+          <i class="fa-solid fa-flask-vial"></i> <span>Hands-On Lab</span>
+        </button>
+        <button class="modal-tab-btn" data-tab="arch">
+          <i class="fa-solid fa-diagram-project"></i> <span>Architecture</span>
+        </button>
+        <button class="modal-tab-btn" data-tab="cli">
+          <i class="fa-solid fa-terminal"></i> <span>CLI & Manifests</span>
+        </button>
+        <button class="modal-tab-btn" data-tab="exam">
+          <i class="fa-solid fa-award"></i> <span>Interview & CKA</span>
+        </button>
+      </div>
+
+      <!-- Modal Body (Panes) -->
+      <div class="modal-body">
+        <div class="tab-pane active" id="pane-theory"></div>
+        <div class="tab-pane" id="pane-desi"></div>
+        <div class="tab-pane" id="pane-arabic"></div>
+        <div class="tab-pane" id="pane-lab"></div>
+        <div class="tab-pane" id="pane-arch"></div>
+        <div class="tab-pane" id="pane-cli"></div>
+        <div class="tab-pane" id="pane-exam"></div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <div class="modal-footer-nav">
+          <button class="modal-nav-btn" id="modal-prev-btn">
+            <i class="fa-solid fa-arrow-left"></i> Previous Day
+          </button>
+          <button class="modal-nav-btn" id="modal-next-btn">
+            Next Day <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <div style="display:flex; gap:0.75rem;">
+          <button class="modal-nav-btn" id="modal-launch-term-btn" style="border-color:#10B981; color:#10B981;">
+            <i class="fa-solid fa-terminal"></i> Practice in Terminal
+          </button>
+          <button class="mark-complete-btn" id="modal-complete-btn">
+            <i class="fa-regular fa-circle"></i> Mark Completed
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-badge"><i class="fa-solid fa-dharmachakra"></i> KR</span>
+        <span>KR Network Cloud • Docker & Kubernetes Production Mastery</span>
+      </div>
+      <p class="footer-text">
+        Complete enterprise engineering notes, trilingual study guides (English, Hinglish & Arabic), live interactive terminal simulations, and verified Certified Kubernetes Administrator (CKA) practical solutions.
+      </p>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+        Designed for DevOps Engineers, Cloud Architects & CKA Aspirants • Ready for 1-Click GitHub Pages Hosting
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/dockerData.js"></script>
+  <script src="js/k8sData.js"></script>
+  <script src="js/cheatsheets.js"></script>
+  <script src="js/quizData.js"></script>
+  <script src="js/terminal.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
